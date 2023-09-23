@@ -39,5 +39,25 @@ describe("<SummaryForm/>", () => {
       expect(targetCheckboxThroughLabel).not.toBeChecked();
       expect(targetButton).toBeDisabled();
     });
+    it("ensures popover is not on DOM by default ", () => {
+      render(<SummaryForm />);
+
+      const targetPopover = screen.queryByText(
+        /no ice cream will actually be delivered/i
+      );
+      expect(targetPopover).not.toBeInTheDocument();
+    });
+    it("displays popover when terms are hovered", async () => {
+      render(<SummaryForm />);
+      const targetTermsAndConditions =
+        screen.getByText(/terms and conditions/i);
+
+      await userEvent.hover(targetTermsAndConditions);
+
+      const targetPopover = screen.getByText(
+        /no ice cream will actually be delivered/i
+      );
+      expect(targetPopover).toBeInTheDocument();
+    });
   });
 });
